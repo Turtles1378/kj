@@ -1,0 +1,4 @@
+var url="https://wearedevs.net/";self.addEventListener('push',function(event){console.log('Push received:',event.data.text())
+if(event.data){var pushedMessage=JSON.parse(event.data.text());if(pushedMessage.type=="notification"){const title=pushedMessage.title;const options=pushedMessage.options;if("link"in options){url=options.link;}
+let promiseChain=self.registration.showNotification(title,options);event.waitUntil(promiseChain);}}else{console.log('This push event has no data.');}});self.addEventListener('notificationclick',function(event){event.notification.close();event.waitUntil(clients.matchAll({type:'window'}).then(windowClients=>{for(var i=0;i<windowClients.length;i++){var client=windowClients[i];if(client.url===url&&'focus'in client){return client.focus();}}
+if(clients.openWindow){return clients.openWindow(url);}}));});
